@@ -27,7 +27,7 @@ public class Player1Movement : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(!Doing.isPlaying)
+        if(!Doing.isPlaying && (collision.collider.name == "Boden" || collision.collider.name == "goal_left" || collision.collider.name == "goal_right"))
             Doing.Play();
     }
 }

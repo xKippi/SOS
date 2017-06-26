@@ -9,7 +9,8 @@ public class BallScript : MonoBehaviour {
 
     private static int _leftScore;
     private static int _rightScore;
-    private int _goalMode = 0;
+    private float oldY;
+    private int _goalMode;
     public Text ScoreBox;
     public Component Player1;
     public Component Player2;
@@ -23,6 +24,10 @@ public class BallScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        if (transform.position.y - oldY == 0)
+            transform.position += new Vector3(0, 0.005F);
+        oldY = transform.position.y;
+
         switch (_goalMode)
         {
 
@@ -64,31 +69,24 @@ public class BallScript : MonoBehaviour {
         Player1.transform.position = new Vector3(-7.24F, -3.76F);
         Player1.transform.rotation = new Quaternion(0, 0, 0, 0);
         Player2.transform.position = new Vector3(7.24F, -3.76F);
-        Player2.transform.rotation = new Quaternion(0, 0, 0, 0);*/
+        Player2.transform.rotation = new Quaternion(0, 0, 0, 0);
+
+        _goalMode = 0;*/
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-
-        _goalMode = 0;
     }
 
     void _goal(ref int score)
     {
         score++;
-        Debug.Log("score++");
         UpdateScore();
-        Debug.Log("UpdateScore");
-        //Thread.Sleep(500);
         if (score < 10)
         {
-            Debug.Log("score<10");
             new Thread(() =>
             {
                 _goalMode = 1;
-                Debug.Log("goalMode=1");
                 Thread.Sleep(2500);
-                Debug.Log("Gute nacht!");
                 _goalMode = 2;
-                Debug.Log("goalmode=2");
             }).Start();
         }
         else
